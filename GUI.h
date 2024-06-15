@@ -79,6 +79,8 @@ protected:
 	virtual void onMouseEnter(wxMouseEvent& event) { event.Skip(); }
 	virtual void onMouseMove(wxMouseEvent& event) { event.Skip(); }
 	virtual void onMouseLeave(wxMouseEvent& event) { event.Skip(); }
+	virtual void onLeftMouseDown(wxMouseEvent& event) { event.Skip(); }
+	virtual void onLeftMouseUp(wxMouseEvent& event) { event.Skip(); }
 
 
 public:

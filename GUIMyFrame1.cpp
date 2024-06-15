@@ -8,6 +8,9 @@ GUIMyFrame1::GUIMyFrame1(wxWindow* parent)
 {
 	panelWidth = panelNaWykres->GetSize().GetWidth();
 	panelHeight = panelNaWykres->GetSize().GetHeight();
+
+	mouseX = panelWidth / 2;
+	mouseY = panelHeight / 2;
 }
 
 void GUIMyFrame1::showInfo(wxMouseEvent& event)
@@ -286,15 +289,20 @@ void GUIMyFrame1::onMouseEnter(wxMouseEvent& event)
 
 void GUIMyFrame1::onMouseMove(wxMouseEvent& event)
 {
-	if (!movingAllowed || isMap()) return;
+	if (!movingAllowed || isMap() || !leftPressed) return;
 
-	mouseX = event.GetPosition().x;
-	mouseY = event.GetPosition().y;
+	int newMouseX = event.GetPosition().x;
+	int newMouseY = event.GetPosition().y;
 
-	//na test
+	mouseX = newMouseX;
+	mouseY = newMouseY;
+
+	//na test - USUN¥Æ!
 	textFunkcja->SetLabel(to_string(mouseX) + " " + to_string(mouseY));
 
 	//tutaj przekazujemy do perspectivic i rysujemy
+
+
 
 }
 
@@ -304,4 +312,14 @@ void GUIMyFrame1::onMouseLeave(wxMouseEvent& event)
 
 	//na test
 	textFunkcja->SetLabel("function");
+}
+
+void GUIMyFrame1::onLeftMouseDown(wxMouseEvent& event)
+{
+	leftPressed = true;
+}
+
+void GUIMyFrame1::onLeftMouseUp(wxMouseEvent& event)
+{
+	leftPressed = false;
 }

@@ -53,8 +53,10 @@ private:
 	Map objMap;
 
 	bool movingAllowed = false;
+	//poczatkowo ustawione na srodek panelu rysowania
 	int mouseX;
 	int mouseY;
+	bool leftPressed = false;
 
 
 
@@ -72,6 +74,8 @@ public:
 	void onMouseEnter(wxMouseEvent& event);
 	void onMouseMove(wxMouseEvent& event);
 	void onMouseLeave(wxMouseEvent& event);
+	void onLeftMouseDown(wxMouseEvent& event);
+	void onLeftMouseUp(wxMouseEvent& event);
 
 	string getFunction() const { return function; }
 	bool checkFunction();
