@@ -52,6 +52,19 @@ private:
 	Perspectivic objPer;
 	Map objMap;
 
+	bool movingAllowed = false;
+	//poczatkowo ustawione na srodek panelu rysowania
+	int mouseX = -10000;
+	int mouseY = -10000;
+	double mouseRotateX = 0;
+	double mouseRotateY = 0;
+	double lastRotateX = 0;
+	double lastRotateY = 0;
+
+	bool leftPressed = false;
+
+
+
 public:
 	// Handlers for MyFrame1 events;
 	void showInfo(wxMouseEvent& event);
@@ -62,6 +75,12 @@ public:
 	void generateClick(wxMouseEvent& event);
 
 	void panelRepaint(wxSizeEvent& event);
+
+	void onMouseEnter(wxMouseEvent& event);
+	void onMouseMove(wxMouseEvent& event);
+	void onMouseLeave(wxMouseEvent& event);
+	void onLeftMouseDown(wxMouseEvent& event);
+	void onLeftMouseUp(wxMouseEvent& event);
 
 	string getFunction() const { return function; }
 	bool checkFunction();
@@ -83,7 +102,7 @@ public:
 	/** Constructor */
 	GUIMyFrame1(wxWindow* parent);
 	//// end generated class members
-	
+
 };
 
 #endif // __GUIMyFrame1__

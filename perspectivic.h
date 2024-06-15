@@ -30,8 +30,8 @@ private:
 	struct AxisNumbers {
 		vector<Perspectivic::Segment> nextSegmentsToDrawCircle;
 		double numberOnAxis;
-		
-		AxisNumbers(vector<Perspectivic::Segment> inside, double number ) : nextSegmentsToDrawCircle(inside), numberOnAxis(number) {}
+
+		AxisNumbers(vector<Perspectivic::Segment> inside, double number) : nextSegmentsToDrawCircle(inside), numberOnAxis(number) {}
 	};
 
 	vector<Perspectivic::Segment> data;
@@ -52,6 +52,11 @@ private:
 	double ymin = -1;
 	double zmax = 1;
 	double zmin = -1;
+	//double moveXDirectionInDegrees;
+	//double moveXDirectionInDegrees;
+	//static double moveXOld;
+	//static double moveYOld;
+
 
 public:
 
@@ -60,17 +65,17 @@ public:
 	}
 
 	double countFunction(double x, double y);
-	void RecountFunctionIntoData( const vector<vector<double>> &funValues);
+	void RecountFunctionIntoData(const vector<vector<double>>& funValues);
 
 	Matrix4 XRotation(double alpha);
 	Matrix4 YRotation(double alpha);
 	Matrix4 ZRotation(double alpha);
 
-	void GenerateTransformMatrix(int width, int height);
+	void GenerateTransformMatrix(int width, int height, double rotateX, double rotateY);
 
 	void getMinYMaxY();
 
-	void Repaint(wxPanel* drawingPanel, int w, int h);
+	void Repaint(wxPanel* drawingPanel, int w, int h, double rotatX, double rotatY);
 
 };
 
