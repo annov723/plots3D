@@ -286,8 +286,7 @@ void Perspectivic::getMinYMaxY() {
 
 void Perspectivic::Repaint(wxPanel * drawingPanel, int w, int h, double rotatX, double rotatY, int zoomValue)
 {
-	// tu rysowac
-	wxClientDC DC(drawingPanel);
+	wxClientDC DC(drawingPanel);	
 	wxBufferedDC BufferedDC(&DC);
 	int width = w;
 	int height = h;

@@ -10,7 +10,7 @@
 
 #include "tinyexpr.h"
 
-	using namespace std;
+using namespace std;
 
 class Map {
 private:
@@ -28,7 +28,6 @@ private:
 public:
 	void getRanges(double xmi, double xma, double ymi, double yma, double zmi, double zma);
 
-	double shepard(double x, double y);
 	void repaint(wxPanel* drawingPanel, int w, int h);
 	void prepareData(const vector<vector<double>>& funValues, int width, int height, string function);
 };

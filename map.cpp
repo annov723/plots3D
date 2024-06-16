@@ -1,7 +1,7 @@
 #include "map.h"
 #include < time.h>
 
-	void Map::getRanges(double xmi, double xma, double ymi, double yma, double zmi, double zma)
+void Map::getRanges(double xmi, double xma, double ymi, double yma, double zmi, double zma)
 {
 	xmin = xmi;
 	xmax = xma;
@@ -9,19 +9,6 @@
 	ymax = yma;
 	zmin = zmi;
 	zmax = zma;
-}
-
-double Map::shepard(double x, double y)
-{
-	double sumUpper = 0, sumLower = 0, wk = 0, xk, yk;
-	for (int i = 0; i < numberOfPoints; i++) {
-		xk = functionPoints[i][0];
-		yk = functionPoints[i][1];
-		wk = 1.0 / abs((x - xk) * (x - xk) + (y - yk) * (y - yk));
-		sumUpper += wk * functionPoints[i][2];
-		sumLower += wk;
-	}
-	return sumUpper / sumLower;
 }
 
 void Map::repaint(wxPanel * drawingPanel, int w, int h)
@@ -92,7 +79,6 @@ void Map::repaint(wxPanel * drawingPanel, int w, int h)
 	}
 }
 
-
 void Map::prepareData(const vector<vector<double>>&funValues, int width, int height, string function)
 {
 	double x, y;
@@ -102,7 +88,6 @@ void Map::prepareData(const vector<vector<double>>&funValues, int width, int hei
 
 	int err;
 	te_expr* expr = te_compile(c, vars, 2, &err);
-
 
 	int sample = 50;
 
