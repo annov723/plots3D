@@ -80,6 +80,7 @@ public:
 	void onMouseLeave(wxMouseEvent& event);
 	void onLeftMouseDown(wxMouseEvent& event);
 	void onLeftMouseUp(wxMouseEvent& event);
+	void onMouseScroll(wxMouseEvent& event);
 
 	string getFunction() const { return function; }
 	bool checkFunction();

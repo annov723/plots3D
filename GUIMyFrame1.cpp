@@ -258,11 +258,6 @@ void GUIMyFrame1::generateClick(wxMouseEvent& event)
 
 	if (!checkFunction()) return;
 
-	//objPer.getAxis(xMin, xMax, yMin, yMax, zMin, zMax);
-	//objMap.getRanges(xMin, xMax, yMin, yMax, zMin, zMax);
-	//objPer.RecountFunctionIntoData(zValuesVec);
-	//objMap.prepareData(zValuesVec, panelWidth, panelHeight);
-
 	repaint();
 	generateClicked = true;
 }
@@ -272,8 +267,8 @@ void GUIMyFrame1::panelRepaint(wxSizeEvent& event)
 	if ((panelWidth != panelNaWykres->GetSize().GetWidth() || panelHeight != panelNaWykres->GetSize().GetHeight()) && generateClicked) {
 		panelWidth = panelNaWykres->GetSize().GetWidth();
 		panelHeight = panelNaWykres->GetSize().GetHeight();
-		//objMap.prepareData(zValuesVec, panelWidth, panelHeight);
 		repaint();
+
 		return;
 	}
 
@@ -323,14 +318,11 @@ void GUIMyFrame1::onMouseMove(wxMouseEvent& event)
 
 	//tutaj przekazujemy do perspectivic i rysujemy
 	if (abs(rotateX - lastRotateX) > M_PI / 100 || abs(rotateY - lastRotateY) > M_PI / 100) {
-
 		lastRotateX = rotateX;
 		lastRotateY = rotateY;
 
 		objPer.Repaint(panelNaWykres, panelWidth, panelHeight, mouseRotateX + rotateX, mouseRotateY + rotateY);
 	}
-	//objPer.Repaint(panelNaWykres, panelWidth, panelHeight, mouseRotateX + rotateX, mouseRotateY + rotateY );
-
 }
 
 void GUIMyFrame1::onMouseLeave(wxMouseEvent& event)
@@ -355,9 +347,6 @@ void GUIMyFrame1::onMouseLeave(wxMouseEvent& event)
 
 	mouseRotateX -= (double)((int)mouseRotateX / 360) * 360;
 	mouseRotateY -= (double)((int)mouseRotateY / 360) * 360;
-
-	//na test
-	textFunkcja->SetLabel("function");
 }
 
 void GUIMyFrame1::onLeftMouseDown(wxMouseEvent& event)
@@ -385,4 +374,17 @@ void GUIMyFrame1::onLeftMouseUp(wxMouseEvent& event)
 
 	mouseRotateX -= (double)((int)mouseRotateX / 360) * 360;
 	mouseRotateY -= (double)((int)mouseRotateY / 360) * 360;
+}
+
+void GUIMyFrame1::onMouseScroll(wxMouseEvent& event)
+{
+	if ( isMap() || !movingAllowed ) return;
+
+	int rotation = event.GetWheelRotation();
+	int delta = event.GetWheelDelta();
+	int linesPerAction = event.GetLinesPerAction();
+	int scrollAmount = rotation / delta;
+
+	//zoom rzutu perspektywicznego
+
 }

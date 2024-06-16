@@ -36,21 +36,6 @@ void Map::repaint(wxPanel * drawingPanel, int w, int h)
 	BufferedDC.SetPen(*wxBLACK_PEN);
 	BufferedDC.SetBrush(*wxTRANSPARENT_BRUSH);
 
-
-	/*for (int y = 0; y < height; y++)
-		for (int x = 0; x < width; x++)
-			values[x][y] = shepard(x / 100.0 - 2.5, -y / 100.0 + 2.5);*/
-
-			/*double min = functionPoints[0][2], max = functionPoints[0][2];
-			for (int i = 0; i < numberOfPoints; i++) {
-				if (functionPoints[i][2] < min)
-					min = functionPoints[i][2];
-				if (functionPoints[i][2] > max)
-					max = functionPoints[i][2];
-			}*/
-
-			//tu mozna dodac shepard tylko bez skalowania wtedy!!!
-
 	std::vector<std::array<wxPoint, 2>> contours;
 	for (int i = 1; i <= 9; i++) {
 		double threshold = zmin + i * (zmax - zmin) / (double)(9 + 1);
@@ -110,63 +95,6 @@ void Map::repaint(wxPanel * drawingPanel, int w, int h)
 
 void Map::prepareData(const vector<vector<double>>&funValues, int width, int height, string function)
 {
-	/*functionPoints.clear();
-
-	for (int i = 0; i < 100; i++) {
-		vector<double> v = { 0., 0., 0. };
-		functionPoints.push_back(v);
-	}
-	//srand(time(NULL));
-
-	double x, y;
-	///// temp
-	int sample = 10;
-	double move = std::max(((xmax - xmin) / sample), (ymax - ymin) / sample);
-	double movex = std::min((xmax - xmin), move);
-	double movey = std::min((ymax - ymin), move);
-	/////
-
-	//numberOfPoints = sample * sample;
-	numberOfPoints = 0;
-
-	//temp fun
-
-	int ii=0;
-
-	for (double xi = 0; xi < funValues.size(); xi += 5 ) {
-
-		x = xi * movex + xmin;
-
-		for (double yi = 0; yi < funValues[0].size(); yi += 5) {
-
-			y = yi * movey + ymin;
-
-			functionPoints[ii][0] = x;
-			functionPoints[ii][1] = y;
-			functionPoints[ii][2] = std::min(std::max(funValues[xi][yi], zmin), zmax);
-			functionPoints[ii][2] = x + y;
-
-
-			ii++;
-
-			numberOfPoints++;
-		}
-	}
-
-	////////////
-
-	values.clear();
-
-	for (int i = 0; i < width; i++) {
-		vector<double> v;
-		for (int j = 0; j < height; j++) v.push_back(0.);
-		values.push_back(v);
-	}
-
-	for (int i = 0; i < height; i++)
-		for (int j = 0; j < width; j++)
-			values[j][i] = shepard(j / 100.0 - 2.5, -i / 100.0 + 2.5);*/
-
 	double x, y;
 	te_variable vars[] = { {"x", &x}, {"y", &y} };
 

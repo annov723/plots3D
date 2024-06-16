@@ -52,10 +52,6 @@ private:
 	double ymin = -1;
 	double zmax = 1;
 	double zmin = -1;
-	//double moveXDirectionInDegrees;
-	//double moveXDirectionInDegrees;
-	//static double moveXOld;
-	//static double moveYOld;
 
 
 public:

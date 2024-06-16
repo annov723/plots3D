@@ -37,30 +37,10 @@ void Perspectivic::RecountFunctionIntoData(const vector<vector<double>> &funValu
 				c1 = Color(255, 255, 255);
 			}
 
-			/*if (z >= zmax && z1 <= zmax) {
-
-				c1 = Color(255, 255, 255);
-			}
-
-			if (z <= zmax && z1 >= zmax) {
-
-				c1 = Color(255, 255, 255);
-			}*/
-
 			if (z > zmax && z2 > zmax) {
 
 				c2 = Color(255, 255, 255);
 			}
-
-			/*if (z >= zmax && z2 <= zmax) {
-
-				c2 = Color(255, 255, 255);
-			}
-
-			if (z <= zmax && z2 >= zmax) {
-
-				c2 = Color(255, 255, 255);
-			}*/
 
 			if (z > zmax) {
 
@@ -102,36 +82,6 @@ void Perspectivic::RecountFunctionIntoData(const vector<vector<double>> &funValu
 				z2 = zmin;
 			}
 
-			/*if (z < zmin) {
-
-				z = zmin;
-				c1 = c2 = Color(255, 255, 255);
-			}
-
-			if (z1 > zmax) {
-
-				z1 = zmax;
-				c1 = Color(255, 255, 255);
-			}
-
-			if (z1 < zmin) {
-
-				z1 = zmin;
-				c1 = Color(255, 255, 255);
-			}
-
-			if (z2 > zmax) {
-
-				z2 = zmax;
-				c2 = Color(255, 255, 255);
-			}
-
-			if (z2 < zmin) {
-
-				z2 = zmin;
-				c2 = Color(255, 255, 255);
-			}*/
-
 			data.push_back(Segment(Point(x, y, z), Point(x, y + movey, z1), c1));
 			data.push_back(Segment(Point(x, y, z), Point(x + movex, y, z2), c2));
 		}
@@ -144,16 +94,6 @@ void Perspectivic::RecountFunctionIntoData(const vector<vector<double>> &funValu
 
 			c3 = Color(255, 255, 255);
 		}
-
-		/*if (z >= zmax && z3 <= zmax) {
-
-			c3 = Color(255, 255, 255);
-		}
-
-		if (z <= zmax && z3 >= zmax) {
-
-			c3 = Color(255, 255, 255);
-		}*/
 
 		if (z > zmax) {
 
@@ -179,30 +119,6 @@ void Perspectivic::RecountFunctionIntoData(const vector<vector<double>> &funValu
 
 			z3 = zmin;
 		}
-
-		/*if (z > zmax) {
-
-			z = zmax;
-			c3 = Color(255, 255, 255);
-		}
-
-		if (z < zmin) {
-
-			z = zmin;
-			c3 = Color(255, 255, 255);
-		}
-
-		if (z3 > zmax) {
-
-			z3 = zmax;
-			c3 = Color(255, 255, 255);
-		}
-
-		if (z3 < zmin) {
-
-			z3 = zmin;
-			c3 = Color(255, 255, 255);
-		}*/
 
 		data.push_back(Segment(Point(x, ymax, z), Point(x + movex, ymax, z3), c3));
 	}
@@ -235,17 +151,6 @@ void Perspectivic::RecountFunctionIntoData(const vector<vector<double>> &funValu
 			c3 = Color(255, 255, 255);
 		}
 
-		/*if (z >= zmax && z3 <= zmax) {
-
-			c3 = Color(255, 255, 255);
-		}
-
-		if (z <= zmax && z3 >= zmax) {
-
-			c3 = Color(255, 255, 255);
-		}*/
-
-
 		if (z < zmin) {
 
 			z = zmin;
@@ -255,30 +160,6 @@ void Perspectivic::RecountFunctionIntoData(const vector<vector<double>> &funValu
 
 			z3 = zmin;
 		}
-
-		/*if (z > zmax) {
-
-			z = zmax;
-			c3 = Color(255, 255, 255);
-		}
-
-		if (z < zmin) {
-
-			z = zmin;
-			c3 = Color(255, 255, 255);
-		}
-
-		if (z3 > zmax) {
-
-			z3 = zmax;
-			c3 = Color(255, 255, 255);
-		}
-
-		if (z3 < zmin) {
-
-			z3 = zmin;
-			c3 = Color(255, 255, 255);
-		}*/
 
 		data.push_back(Segment(Point(xmax, y, z), Point(xmax, y + movey, z3), c3));
 	}
@@ -286,7 +167,6 @@ void Perspectivic::RecountFunctionIntoData(const vector<vector<double>> &funValu
 	double grid = std::max(xmax - xmin, std::max(ymax - ymin, zmax - zmin)) / 20;
 
 	//  AXIS draw
-
 	data.push_back(Segment(Point(xmin, (ymax + ymin) / 2, (zmax + zmin) / 2), Point(xmax, (ymax + ymin) / 2, (zmax + zmin) / 2), Color(255, 0, 0)));
 	for (double i = 0; i < M_PI / 2; i += 0.3) {
 		data.push_back(Segment(Point(xmax - grid / 2, grid / 16 * sqrt(1 - pow(sin(i), 2)) + (ymax + ymin) / 2, grid / 16 * sqrt(1 - pow(cos(i), 2)) + (zmax + zmin) / 2), Point(xmax, (ymax + ymin) / 2, (zmax + zmin) / 2), Color(255, 0, 0)));
@@ -380,7 +260,6 @@ void Perspectivic::GenerateTransformMatrix(int width, int height, double rotateX
 	matrix2.data[0][3] = -((xmax + xmin) / 2);
 	matrix2.data[1][3] = -((ymax + ymin) / 2);
 	matrix2.data[2][3] = -(zmax + zmin) / 2;
-	//matrix2.data[2][3] = 4;
 
 	Matrix4 matrix3; // transformata obrotu
 	matrix3 = XRotation(rotateY) * YRotation(0) * ZRotation(rotateX);
@@ -417,16 +296,8 @@ void Perspectivic::Repaint(wxPanel * drawingPanel, int w, int h, double rotatX, 
 
 	getMinYMaxY();
 
-	//double colorR = 255;
-	//double colorB = 0;
-
 	for (int i = 0; i < data.size(); i++) {
-
 		Vector4 begin, end;
-
-		//colorR = 255 * ((maxY - data[i].begin.z) * 10000 / (maxY - minY)) / 10000;
-		//colorB = 255 * ((data[i].begin.z - minY) * 10000 / (maxY - minY)) / 10000;
-		//BufferedDC.SetPen(wxPen(wxColour(colorR, 0, colorB)));
 
 		if (data[i].color.R == 255 && data[i].color.G == 255 && data[i].color.B == 255)continue;
 
