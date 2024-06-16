@@ -62,7 +62,7 @@ private:
 
 	bool leftPressed = false;
 
-
+	int scrollCounter = 0;
 
 public:
 	// Handlers for MyFrame1 events;

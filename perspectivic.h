@@ -66,11 +66,11 @@ public:
 	Matrix4 YRotation(double alpha);
 	Matrix4 ZRotation(double alpha);
 
-	void GenerateTransformMatrix(int width, int height, double rotateX, double rotateY);
+	void GenerateTransformMatrix(int width, int height, double rotateX, double rotateY, int zoomValue);
 
 	void getMinYMaxY();
 
-	void Repaint(wxPanel* drawingPanel, int w, int h, double rotatX, double rotatY);
+	void Repaint(wxPanel* drawingPanel, int w, int h, double rotatX, double rotatY, int zoomValue);
 
 };
 
