@@ -116,7 +116,7 @@ void Perspectivic::RecountFunctionIntoData(const vector<vector<double>> &funValu
 			z3 = zmin;
 		}
 
-		data.push_back(Segment(Point(x, ymax, z), Point(x + movex, ymax, z3), c3));
+		data.push_back(Segment(Point(x, ymax-movey, z), Point(x + movex, ymax - movey, z3), c3));
 	}
 
 	for (int yi = 0; yi < funValues[0].size() - 1; yi++) {
@@ -157,7 +157,7 @@ void Perspectivic::RecountFunctionIntoData(const vector<vector<double>> &funValu
 			z3 = zmin;
 		}
 
-		data.push_back(Segment(Point(xmax, y, z), Point(xmax, y + movey, z3), c3));
+		data.push_back(Segment(Point(xmax - movex, y, z), Point(xmax - movex, y + movey, z3), c3));
 	}
 
 	double grid = std::max(xmax - xmin, std::max(ymax - ymin, zmax - zmin)) / 20;
@@ -286,8 +286,7 @@ void Perspectivic::getMinYMaxY() {
 
 void Perspectivic::Repaint(wxPanel * drawingPanel, int w, int h, double rotatX, double rotatY, int zoomValue)
 {
-	// tu rysowac
-	wxClientDC DC(drawingPanel);
+	wxClientDC DC(drawingPanel);	
 	wxBufferedDC BufferedDC(&DC);
 	int width = w;
 	int height = h;

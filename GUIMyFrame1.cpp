@@ -392,6 +392,4 @@ void GUIMyFrame1::onMouseScroll(wxMouseEvent& event)
 	scrollCounter = std::min(std::max(scrollCounter, -50), 11);
 
 	repaint();
-	//zoom rzutu perspektywicznego
-
 }
