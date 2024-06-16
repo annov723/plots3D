@@ -20,6 +20,15 @@ void Map::repaint(wxPanel * drawingPanel, int w, int h)
 	BufferedDC.SetBackground(wxBrush(wxColour("white")));
 	BufferedDC.Clear();
 
+	for (int x = 0; x < w; x += 2) {
+
+		for (int y = 0; y < h; y += 2) {
+
+			BufferedDC.SetPen(wxPen(wxColour(pixelColors[x][y].R, pixelColors[x][y].G, pixelColors[x][y].B)));
+			BufferedDC.DrawRectangle(x, y, 2, 2);
+		}
+	}
+
 	BufferedDC.SetPen(*wxBLACK_PEN);
 	BufferedDC.SetBrush(*wxTRANSPARENT_BRUSH);
 
@@ -79,6 +88,21 @@ void Map::repaint(wxPanel * drawingPanel, int w, int h)
 	}
 }
 
+Map::Color Map::evaluateColor(double value) {
+
+	if (value > zmax || value < zmin) {
+
+		return Color(255, 255, 255);
+	}
+	value = max(min(value, zmax), zmin);
+
+	value -= zmin;
+
+	value /= (zmax-zmin);
+
+	return Color(255 * value, 0, 255 * (1. - value));
+}
+
 void Map::prepareData(const vector<vector<double>>&funValues, int width, int height, string function)
 {
 	double x, y;
@@ -95,8 +119,10 @@ void Map::prepareData(const vector<vector<double>>&funValues, int width, int hei
 	double movey = (double)(ymax - ymin) / height;
 
 	values.clear();
+	pixelColors.clear();
 
 	vector < double > tempVec;
+	vector <Color> tempVecColor;
 
 	for (double xi = xmin; xi <= (xmax); xi += movex) {
 
@@ -106,10 +132,13 @@ void Map::prepareData(const vector<vector<double>>&funValues, int width, int hei
 			y = yi;
 
 			tempVec.push_back(te_eval(expr));
+			tempVecColor.push_back(evaluateColor(tempVec.back()));
 		}
 
 		values.push_back(tempVec);
 		tempVec.clear();
+		pixelColors.push_back(tempVecColor);
+		tempVecColor.clear();
 	}
 
 }

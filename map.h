@@ -14,9 +14,15 @@ using namespace std;
 
 class Map {
 private:
+
+	struct Color {
+		int R, G, B;
+		Color(int _R, int _G, int _B) : R(_R), G(_G), B(_B) {}
+	};
+
 	int numberOfPoints;
 	vector<vector<double>> values;
-	vector<vector<double>> functionPoints;
+	vector<vector<Color>> pixelColors;
 
 	double xmin;
 	double xmax;
@@ -25,7 +31,10 @@ private:
 	double zmin;
 	double zmax;
 
+	Color evaluateColor(double value);
+
 public:
+
 	void getRanges(double xmi, double xma, double ymi, double yma, double zmi, double zma);
 
 	void repaint(wxPanel* drawingPanel, int w, int h);
