@@ -256,6 +256,8 @@ void GUIMyFrame1::generateClick(wxMouseEvent& event)
 	mouseRotateX = 0;
 	mouseRotateY = 0;
 
+	scrollCounter = 0;
+
 	if (!checkFunction()) return;
 
 	repaint();
@@ -283,7 +285,7 @@ void GUIMyFrame1::repaint()
 		//generuj rzut perspektywiczny
 		objPer.getAxis(xMin, xMax, yMin, yMax, zMin, zMax);
 		objPer.RecountFunctionIntoData(zValuesVec);
-		objPer.Repaint(panelNaWykres, panelWidth, panelHeight, mouseRotateX, mouseRotateY);
+		objPer.Repaint(panelNaWykres, panelWidth, panelHeight, mouseRotateX, mouseRotateY, scrollCounter);
 	}
 	else {
 		//generuj mape konturowa
@@ -321,7 +323,7 @@ void GUIMyFrame1::onMouseMove(wxMouseEvent& event)
 		lastRotateX = rotateX;
 		lastRotateY = rotateY;
 
-		objPer.Repaint(panelNaWykres, panelWidth, panelHeight, mouseRotateX + rotateX, mouseRotateY + rotateY);
+		objPer.Repaint(panelNaWykres, panelWidth, panelHeight, mouseRotateX + rotateX, mouseRotateY + rotateY, scrollCounter);
 	}
 }
 
@@ -383,8 +385,13 @@ void GUIMyFrame1::onMouseScroll(wxMouseEvent& event)
 	int rotation = event.GetWheelRotation();
 	int delta = event.GetWheelDelta();
 	int linesPerAction = event.GetLinesPerAction();
-	int scrollAmount = rotation / delta;
+	double scrollAmount = (double)rotation / delta;
 
+	scrollCounter+= scrollAmount;
+
+	scrollCounter = std::min(std::max(scrollCounter, -50), 11);
+
+	repaint();
 	//zoom rzutu perspektywicznego
 
 }

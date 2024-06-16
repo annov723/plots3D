@@ -233,7 +233,7 @@ Matrix4 Perspectivic::ZRotation(double alpha) {
 	return matrix;
 }
 
-void Perspectivic::GenerateTransformMatrix(int width, int height, double rotateX, double rotateY) {
+void Perspectivic::GenerateTransformMatrix(int width, int height, double rotateX, double rotateY, int zoomValue) {
 
 	Matrix4 m1;
 	m1.data[0][0] = 1;
@@ -260,7 +260,13 @@ void Perspectivic::GenerateTransformMatrix(int width, int height, double rotateX
 	Matrix4 matrix3; // transformata obrotu
 	matrix3 = XRotation(rotateY) * YRotation(0) * ZRotation(rotateX);
 
-	t = matrix3 * matrix * matrix2;
+	Matrix4 matrix4; // transformata przesuniecia koñcowego
+	matrix4.data[0][0] = matrix4.data[1][1] = matrix4.data[2][2] = 1;
+	matrix4.data[0][3] = 0;
+	matrix4.data[1][3] = 0;
+	matrix4.data[2][3] = (double)-zoomValue /7 ;
+
+	t = matrix4 * matrix3 * matrix * matrix2;
 	t1 = m2 * m1;
 }
 
@@ -278,7 +284,7 @@ void Perspectivic::getMinYMaxY() {
 	}
 }
 
-void Perspectivic::Repaint(wxPanel * drawingPanel, int w, int h, double rotatX, double rotatY)
+void Perspectivic::Repaint(wxPanel * drawingPanel, int w, int h, double rotatX, double rotatY, int zoomValue)
 {
 	// tu rysowac
 	wxClientDC DC(drawingPanel);
@@ -288,7 +294,7 @@ void Perspectivic::Repaint(wxPanel * drawingPanel, int w, int h, double rotatX, 
 	BufferedDC.SetBackground(wxBrush(wxColour("white")));
 	BufferedDC.Clear();
 
-	GenerateTransformMatrix(width, height, rotatX, rotatY);
+	GenerateTransformMatrix(width, height, rotatX, rotatY, zoomValue);
 
 	getMinYMaxY();
 
