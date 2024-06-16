@@ -1,10 +1,10 @@
 #include "perspectivic.h"
 
-double Perspectivic::countFunction(double x, double y) {
-	return sin(x)+x+y ;
+	double Perspectivic::countFunction(double x, double y) {
+	return sin(x) + x + y;
 }
 
-void Perspectivic::RecountFunctionIntoData( const vector<vector<double>> &funValues) {
+void Perspectivic::RecountFunctionIntoData(const vector<vector<double>> &funValues) {
 
 	data.clear();
 	int sample = 50;
@@ -17,7 +17,7 @@ void Perspectivic::RecountFunctionIntoData( const vector<vector<double>> &funVal
 	double movex = std::min((xmax - xmin), move);
 	double movey = std::min((ymax - ymin), move);
 
-	for (int xi = 0; xi < funValues.size()-1; xi ++) {
+	for (int xi = 0; xi < funValues.size() - 1; xi++) {
 
 		x = xi * movex + xmin;
 
@@ -207,7 +207,7 @@ void Perspectivic::RecountFunctionIntoData( const vector<vector<double>> &funVal
 		data.push_back(Segment(Point(x, ymax, z), Point(x + movex, ymax, z3), c3));
 	}
 
-	for (int yi = 0; yi < funValues[0].size() - 1; yi ++) {
+	for (int yi = 0; yi < funValues[0].size() - 1; yi++) {
 
 		y = yi * movey + ymin;
 
@@ -295,20 +295,20 @@ void Perspectivic::RecountFunctionIntoData( const vector<vector<double>> &funVal
 		data.push_back(Segment(Point(xmax - grid / 2, -grid / 16 * sqrt(1 - pow(sin(i), 2)) + (ymax + ymin) / 2, grid / 16 * sqrt(1 - pow(cos(i), 2)) + (zmax + zmin) / 2), Point(xmax, (ymax + ymin) / 2, (zmax + zmin) / 2), Color(255, 0, 0)));
 	}
 
-	data.push_back(Segment(Point((xmax+xmin)/2, ymin, (zmax + zmin) / 2), Point((xmax + xmin) / 2, ymax, (zmax + zmin) / 2), Color(0, 255, 0)));
+	data.push_back(Segment(Point((xmax + xmin) / 2, ymin, (zmax + zmin) / 2), Point((xmax + xmin) / 2, ymax, (zmax + zmin) / 2), Color(0, 255, 0)));
 	for (double i = 0; i < M_PI / 2; i += 0.3) {
-		data.push_back(Segment(Point(grid / 16 * sqrt(1 - pow(sin(i), 2))+ (xmax + xmin) / 2, ymax - grid / 2, grid / 16 * sqrt(1 - pow(cos(i), 2)) + (zmax + zmin) / 2), Point((xmax + xmin) / 2, ymax, (zmax + zmin) / 2), Color(0, 255, 0)));
-		data.push_back(Segment(Point(-grid / 16 * sqrt(1 - pow(sin(i), 2))+ (xmax + xmin) / 2, ymax - grid / 2, grid / 16 * sqrt(1 - pow(cos(i), 2)) + (zmax + zmin) / 2), Point((xmax + xmin) / 2, ymax, (zmax + zmin) / 2), Color(0, 255, 0)));
-		data.push_back(Segment(Point(-grid / 16 * sqrt(1 - pow(sin(i), 2))+ (xmax + xmin) / 2, ymax - grid / 2, -grid / 16 * sqrt(1 - pow(cos(i), 2)) + (zmax + zmin) / 2), Point((xmax + xmin) / 2, ymax, (zmax + zmin) / 2), Color(0, 255, 0)));
-		data.push_back(Segment(Point(grid / 16 * sqrt(1 - pow(sin(i), 2))+ (xmax + xmin) / 2, ymax - grid / 2, -grid / 16 * sqrt(1 - pow(cos(i), 2)) + (zmax + zmin) / 2), Point((xmax + xmin) / 2, ymax, (zmax + zmin) / 2), Color(0, 255, 0)));
+		data.push_back(Segment(Point(grid / 16 * sqrt(1 - pow(sin(i), 2)) + (xmax + xmin) / 2, ymax - grid / 2, grid / 16 * sqrt(1 - pow(cos(i), 2)) + (zmax + zmin) / 2), Point((xmax + xmin) / 2, ymax, (zmax + zmin) / 2), Color(0, 255, 0)));
+		data.push_back(Segment(Point(-grid / 16 * sqrt(1 - pow(sin(i), 2)) + (xmax + xmin) / 2, ymax - grid / 2, grid / 16 * sqrt(1 - pow(cos(i), 2)) + (zmax + zmin) / 2), Point((xmax + xmin) / 2, ymax, (zmax + zmin) / 2), Color(0, 255, 0)));
+		data.push_back(Segment(Point(-grid / 16 * sqrt(1 - pow(sin(i), 2)) + (xmax + xmin) / 2, ymax - grid / 2, -grid / 16 * sqrt(1 - pow(cos(i), 2)) + (zmax + zmin) / 2), Point((xmax + xmin) / 2, ymax, (zmax + zmin) / 2), Color(0, 255, 0)));
+		data.push_back(Segment(Point(grid / 16 * sqrt(1 - pow(sin(i), 2)) + (xmax + xmin) / 2, ymax - grid / 2, -grid / 16 * sqrt(1 - pow(cos(i), 2)) + (zmax + zmin) / 2), Point((xmax + xmin) / 2, ymax, (zmax + zmin) / 2), Color(0, 255, 0)));
 	}
 
 	data.push_back(Segment(Point((xmax + xmin) / 2, (ymax + ymin) / 2, zmin), Point((xmax + xmin) / 2, (ymax + ymin) / 2, zmax), Color(0, 0, 255)));
 	for (double i = 0; i < M_PI / 2; i += 0.3) {
-		data.push_back(Segment(Point(grid / 16 * sqrt(1 - pow(cos(i), 2))+ (xmax + xmin) / 2, grid / 16 * sqrt(1 - pow(sin(i), 2))+ (ymax + ymin) / 2, zmax - grid / 2), Point((xmax + xmin) / 2, (ymax + ymin) / 2, zmax), Color(0, 0, 255)));
-		data.push_back(Segment(Point(-grid / 16 * sqrt(1 - pow(cos(i), 2))+ (xmax + xmin) / 2, grid / 16 * sqrt(1 - pow(sin(i), 2))+ (ymax + ymin) / 2, zmax - grid / 2), Point((xmax + xmin) / 2, (ymax + ymin) / 2, zmax), Color(0, 0, 255)));
-		data.push_back(Segment(Point(-grid / 16 * sqrt(1 - pow(cos(i), 2))+ (xmax + xmin) / 2, -grid / 16 * sqrt(1 - pow(sin(i), 2))+ (ymax + ymin) / 2, zmax - grid / 2), Point((xmax + xmin) / 2, (ymax + ymin) / 2, zmax), Color(0, 0, 255)));
-		data.push_back(Segment(Point(grid / 16 * sqrt(1 - pow(cos(i), 2))+ (xmax + xmin) / 2, -grid / 16 * sqrt(1 - pow(sin(i), 2))+ (ymax + ymin) / 2, zmax - grid / 2), Point((xmax + xmin) / 2, (ymax + ymin) / 2, zmax), Color(0, 0, 255)));
+		data.push_back(Segment(Point(grid / 16 * sqrt(1 - pow(cos(i), 2)) + (xmax + xmin) / 2, grid / 16 * sqrt(1 - pow(sin(i), 2)) + (ymax + ymin) / 2, zmax - grid / 2), Point((xmax + xmin) / 2, (ymax + ymin) / 2, zmax), Color(0, 0, 255)));
+		data.push_back(Segment(Point(-grid / 16 * sqrt(1 - pow(cos(i), 2)) + (xmax + xmin) / 2, grid / 16 * sqrt(1 - pow(sin(i), 2)) + (ymax + ymin) / 2, zmax - grid / 2), Point((xmax + xmin) / 2, (ymax + ymin) / 2, zmax), Color(0, 0, 255)));
+		data.push_back(Segment(Point(-grid / 16 * sqrt(1 - pow(cos(i), 2)) + (xmax + xmin) / 2, -grid / 16 * sqrt(1 - pow(sin(i), 2)) + (ymax + ymin) / 2, zmax - grid / 2), Point((xmax + xmin) / 2, (ymax + ymin) / 2, zmax), Color(0, 0, 255)));
+		data.push_back(Segment(Point(grid / 16 * sqrt(1 - pow(cos(i), 2)) + (xmax + xmin) / 2, -grid / 16 * sqrt(1 - pow(sin(i), 2)) + (ymax + ymin) / 2, zmax - grid / 2), Point((xmax + xmin) / 2, (ymax + ymin) / 2, zmax), Color(0, 0, 255)));
 	}
 }
 
@@ -345,7 +345,7 @@ Matrix4 Perspectivic::YRotation(double alpha) {
 Matrix4 Perspectivic::ZRotation(double alpha) {
 
 	Matrix4 matrix;
-	alpha = ((alpha+44) * M_PI) / 180.0;
+	alpha = ((alpha + 44) * M_PI) / 180.0;
 
 	matrix.data[0][0] = cos(alpha);
 	matrix.data[0][1] = -sin(alpha);
@@ -357,7 +357,7 @@ Matrix4 Perspectivic::ZRotation(double alpha) {
 	return matrix;
 }
 
-void Perspectivic::GenerateTransformMatrix(int width, int height ) {
+void Perspectivic::GenerateTransformMatrix(int width, int height, double rotateX, double rotateY) {
 
 	Matrix4 m1;
 	m1.data[0][0] = 1;
@@ -377,13 +377,13 @@ void Perspectivic::GenerateTransformMatrix(int width, int height ) {
 
 	Matrix4 matrix2; // transformata przesuniecia
 	matrix2.data[0][0] = matrix2.data[1][1] = matrix2.data[2][2] = 1;
-	matrix2.data[0][3] = -((xmax + xmin) / 2) ;
-	matrix2.data[1][3] = -((ymax + ymin)/2);
-	matrix2.data[2][3] = -(zmax + zmin)/2;
+	matrix2.data[0][3] = -((xmax + xmin) / 2);
+	matrix2.data[1][3] = -((ymax + ymin) / 2);
+	matrix2.data[2][3] = -(zmax + zmin) / 2;
 	//matrix2.data[2][3] = 4;
 
 	Matrix4 matrix3; // transformata obrotu
-	matrix3 = XRotation(0) * YRotation(0) * ZRotation(0);
+	matrix3 = XRotation(rotateY) * YRotation(0) * ZRotation(rotateX);
 
 	t = matrix3 * matrix * matrix2;
 	t1 = m2 * m1;
@@ -403,7 +403,7 @@ void Perspectivic::getMinYMaxY() {
 	}
 }
 
-void Perspectivic::Repaint(wxPanel* drawingPanel, int w, int h)
+void Perspectivic::Repaint(wxPanel * drawingPanel, int w, int h, double rotatX, double rotatY)
 {
 	// tu rysowac
 	wxClientDC DC(drawingPanel);
@@ -413,7 +413,7 @@ void Perspectivic::Repaint(wxPanel* drawingPanel, int w, int h)
 	BufferedDC.SetBackground(wxBrush(wxColour("white")));
 	BufferedDC.Clear();
 
-	GenerateTransformMatrix(width, height);
+	GenerateTransformMatrix(width, height, rotatX, rotatY);
 
 	getMinYMaxY();
 
@@ -483,6 +483,6 @@ void Perspectivic::Repaint(wxPanel* drawingPanel, int w, int h)
 			end.data[2] /= end.data[3];
 		}
 
-		BufferedDC.DrawLine(width -begin.GetX(), begin.GetY(), width - end.GetX(), end.GetY());
+		BufferedDC.DrawLine(width - begin.GetX(), begin.GetY(), width - end.GetX(), end.GetY());
 	}
 }

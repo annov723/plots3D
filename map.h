@@ -8,16 +8,16 @@
 #include <vector>
 #include <array>
 
+#include "tinyexpr.h"
 
-using namespace std;
+	using namespace std;
 
 class Map {
 private:
 	int numberOfPoints;
+	vector<vector<double>> values;
 	vector<vector<double>> functionPoints;
 
-	double countFunction(double x, double y);
-	
 	double xmin;
 	double xmax;
 	double ymin;
@@ -30,7 +30,7 @@ public:
 
 	double shepard(double x, double y);
 	void repaint(wxPanel* drawingPanel, int w, int h);
-	void prepareData(int num);
+	void prepareData(const vector<vector<double>>& funValues, int width, int height, string function);
 };
 
 #endif

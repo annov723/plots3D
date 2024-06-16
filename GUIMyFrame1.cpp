@@ -15,9 +15,8 @@ GUIMyFrame1::GUIMyFrame1(wxWindow* parent)
 
 void GUIMyFrame1::showInfo(wxMouseEvent& event)
 {
-	//uzupe³niæ o instrukcjê!
-	wxMessageDialog* infoDialog = new wxMessageDialog(this, "-> use only x and y variables\n-> use \"sqrt()\" as aquare root\n->use \"^n\" to raise to the n-th power\n-> use \".\" to create floating-point numbers\n-> you can use constants \"pi\" and \"e\"\n-> sin(), cos() and tan() are available to be used too", 
-															"How to plot?", wxOK | wxICON_INFORMATION);
+	wxMessageDialog* infoDialog = new wxMessageDialog(this, "-> use only x and y variables\n-> use \"sqrt()\" as aquare root\n->use \"^n\" to raise to the n-th power\n-> use \".\" to create floating-point numbers\n-> you can use constants \"pi\" and \"e\"\n-> sin(), cos() and tan() are available to be used too",
+		"How to plot?", wxOK | wxICON_INFORMATION);
 	infoDialog->ShowModal();
 	infoDialog->Destroy();
 }
@@ -31,7 +30,7 @@ bool GUIMyFrame1::checkFunction()
 
 	int err;
 	te_expr* expr = te_compile(c, vars, 2, &err);
-	
+
 	if (!expr) {
 		textCtrlFunkcja->SetValue("");
 		return false;
@@ -40,13 +39,13 @@ bool GUIMyFrame1::checkFunction()
 	if (!checkNumbers()) {
 		return false;
 	}
-	
+
 	int sample = 50;
 
 	double move = std::max(((xMax - xMin) / sample), (yMax - yMin) / sample);
 	double movex = std::min((xMax - xMin), move);
 	double movey = std::min((yMax - yMin), move);
-	
+
 	zValuesVec.clear();
 
 	vector < double > tempVec;
@@ -60,7 +59,7 @@ bool GUIMyFrame1::checkFunction()
 
 			tempVec.push_back(te_eval(expr));
 		}
-		
+
 		zValuesVec.push_back(tempVec);
 		tempVec.clear();
 	}
@@ -172,9 +171,13 @@ void GUIMyFrame1::perspectiveClick(wxMouseEvent& event)
 	inPerspective = true;
 	inMap = false;
 
+	mouseRotateX = 0;
+	mouseRotateY = 0;
+
+
 	if (radioRzut->GetValue()) {
 		radioMapa->SetValue(false);
-		
+
 		//generujemy wykres!
 		if (generateClicked) repaint();
 	}
@@ -187,6 +190,9 @@ void GUIMyFrame1::outlineClick(wxMouseEvent& event)
 {
 	inPerspective = false;
 	inMap = true;
+
+	mouseRotateX = 0;
+	mouseRotateY = 0;
 
 	if (radioMapa->GetValue()) {
 		radioRzut->SetValue(false);
@@ -247,16 +253,26 @@ void GUIMyFrame1::generateClick(wxMouseEvent& event)
 {
 	function = textCtrlFunkcja->GetValue();
 
+	mouseRotateX = 0;
+	mouseRotateY = 0;
+
 	if (!checkFunction()) return;
+
+	//objPer.getAxis(xMin, xMax, yMin, yMax, zMin, zMax);
+	//objMap.getRanges(xMin, xMax, yMin, yMax, zMin, zMax);
+	//objPer.RecountFunctionIntoData(zValuesVec);
+	//objMap.prepareData(zValuesVec, panelWidth, panelHeight);
+
 	repaint();
 	generateClicked = true;
 }
 
 void GUIMyFrame1::panelRepaint(wxSizeEvent& event)
 {
-	if ( ( panelWidth != panelNaWykres->GetSize().GetWidth() || panelHeight != panelNaWykres->GetSize().GetHeight() ) && generateClicked ) {
+	if ((panelWidth != panelNaWykres->GetSize().GetWidth() || panelHeight != panelNaWykres->GetSize().GetHeight()) && generateClicked) {
 		panelWidth = panelNaWykres->GetSize().GetWidth();
 		panelHeight = panelNaWykres->GetSize().GetHeight();
+		//objMap.prepareData(zValuesVec, panelWidth, panelHeight);
 		repaint();
 		return;
 	}
@@ -272,13 +288,14 @@ void GUIMyFrame1::repaint()
 		//generuj rzut perspektywiczny
 		objPer.getAxis(xMin, xMax, yMin, yMax, zMin, zMax);
 		objPer.RecountFunctionIntoData(zValuesVec);
-		objPer.Repaint(panelNaWykres, panelWidth, panelHeight);
+		objPer.Repaint(panelNaWykres, panelWidth, panelHeight, mouseRotateX, mouseRotateY);
 	}
 	else {
 		//generuj mape konturowa
-		objMap.getRanges(xMin, xMax, yMin, yMax, zMin, zMax );
+		objMap.getRanges(xMin, xMax, yMin, yMax, zMin, zMax);
+		objMap.prepareData(zValuesVec, panelWidth, panelHeight, function);
 		objMap.repaint(panelNaWykres, panelWidth, panelHeight);
-		
+
 	}
 }
 
@@ -291,24 +308,53 @@ void GUIMyFrame1::onMouseMove(wxMouseEvent& event)
 {
 	if (!movingAllowed || isMap() || !leftPressed) return;
 
+	if (mouseX == -10000 && mouseY == -10000) {
+
+		mouseX = event.GetPosition().x;
+		mouseY = event.GetPosition().y;
+		return;
+	}
+
 	int newMouseX = event.GetPosition().x;
 	int newMouseY = event.GetPosition().y;
 
-	mouseX = newMouseX;
-	mouseY = newMouseY;
-
-	//na test - USUN¥Æ!
-	textFunkcja->SetLabel(to_string(mouseX) + " " + to_string(mouseY));
+	double rotateX = (double)(newMouseX - mouseX) / (double)panelWidth * 180;
+	double rotateY = (double)(newMouseY - mouseY) / (double)panelHeight * 180;
 
 	//tutaj przekazujemy do perspectivic i rysujemy
+	if (abs(rotateX - lastRotateX) > M_PI / 100 || abs(rotateY - lastRotateY) > M_PI / 100) {
 
+		lastRotateX = rotateX;
+		lastRotateY = rotateY;
 
+		objPer.Repaint(panelNaWykres, panelWidth, panelHeight, mouseRotateX + rotateX, mouseRotateY + rotateY);
+	}
+	//objPer.Repaint(panelNaWykres, panelWidth, panelHeight, mouseRotateX + rotateX, mouseRotateY + rotateY );
 
 }
 
 void GUIMyFrame1::onMouseLeave(wxMouseEvent& event)
 {
 	movingAllowed = false;
+
+	int newMouseX = event.GetPosition().x;
+	int newMouseY = event.GetPosition().y;
+	double rotateX = (double)(newMouseX - mouseX) / (double)panelWidth * 180;
+	double rotateY = (double)(newMouseY - mouseY) / (double)panelHeight * 180;
+
+	leftPressed = false;
+
+	mouseX = -10000;
+	mouseY = -10000;
+
+	lastRotateX = 0;
+	lastRotateY = 0;
+
+	mouseRotateX += rotateX;
+	mouseRotateY += rotateY;
+
+	mouseRotateX -= (double)((int)mouseRotateX / 360) * 360;
+	mouseRotateY -= (double)((int)mouseRotateY / 360) * 360;
 
 	//na test
 	textFunkcja->SetLabel("function");
@@ -322,4 +368,21 @@ void GUIMyFrame1::onLeftMouseDown(wxMouseEvent& event)
 void GUIMyFrame1::onLeftMouseUp(wxMouseEvent& event)
 {
 	leftPressed = false;
+
+	int newMouseX = event.GetPosition().x;
+	int newMouseY = event.GetPosition().y;
+	double rotateX = (double)(newMouseX - mouseX) / (double)panelWidth * 180;
+	double rotateY = (double)(newMouseY - mouseY) / (double)panelHeight * 180;
+
+	mouseX = -10000;
+	mouseY = -10000;
+
+	lastRotateX = 0;
+	lastRotateY = 0;
+
+	mouseRotateX += rotateX;
+	mouseRotateY += rotateY;
+
+	mouseRotateX -= (double)((int)mouseRotateX / 360) * 360;
+	mouseRotateY -= (double)((int)mouseRotateY / 360) * 360;
 }
