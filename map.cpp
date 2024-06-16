@@ -33,42 +33,27 @@ void Map::repaint(wxPanel* drawingPanel, int w, int h)
 	BufferedDC.SetBackground(wxBrush(wxColour("white")));
 	BufferedDC.Clear();
 
-	for (int i = 0; i < 100; i++) {
-		vector<double> v = { 0., 0., 0. };
-		functionPoints.push_back(v);
-	}
-
-	prepareData(1);
-
 	BufferedDC.SetPen(*wxBLACK_PEN);
 	BufferedDC.SetBrush(*wxTRANSPARENT_BRUSH);
 
-	vector<vector<double>> values;
 
-	for (int i = 0; i < width; i++) {
-		vector<double> v;
-		for (int j = 0; j < height; j++) v.push_back(0.);
-		values.push_back(v);
-	}
-
-
-	for (int y = 0; y < height; y++)
+	/*for (int y = 0; y < height; y++)
 		for (int x = 0; x < width; x++)
-			values[x][y] = shepard(x / 100.0 - 2.5, -y / 100.0 + 2.5);
+			values[x][y] = shepard(x / 100.0 - 2.5, -y / 100.0 + 2.5);*/
 
-	double min = functionPoints[0][2], max = functionPoints[0][2];
-	for (int i = 0; i < numberOfPoints; i++) {
-		if (functionPoints[i][2] < min)
-			min = functionPoints[i][2];
-		if (functionPoints[i][2] > max)
-			max = functionPoints[i][2];
-	}
+			/*double min = functionPoints[0][2], max = functionPoints[0][2];
+			for (int i = 0; i < numberOfPoints; i++) {
+				if (functionPoints[i][2] < min)
+					min = functionPoints[i][2];
+				if (functionPoints[i][2] > max)
+					max = functionPoints[i][2];
+			}*/
 
-	//tu mozna dodac shepard tylko bez skalowania wtedy!!!
+			//tu mozna dodac shepard tylko bez skalowania wtedy!!!
 
 	std::vector<std::array<wxPoint, 2>> contours;
 	for (int i = 1; i <= 9; i++) {
-		double threshold = min + i * (max - min) / (double)(9 + 1);
+		double threshold = zmin + i * (zmax - zmin) / (double)(9 + 1);
 		for (int x = 1; x < width - 1; x++) {
 			for (int y = 1; y < height - 1; y++) {
 				int code = (values[x - 1][y + 1] > threshold ? 1 : 0) +
@@ -121,18 +106,18 @@ void Map::repaint(wxPanel* drawingPanel, int w, int h)
 			BufferedDC.DrawLine(item[0], item[1]);
 	}
 }
-/////////// temp fun
-double Map::countFunction(double x, double y) {
-	return sin(x) + x + y;
-}
-
-////
 
 
-void Map::prepareData(int num)
+void Map::prepareData(const vector<vector<double>>& funValues, int width, int height, string function)
 {
+	/*functionPoints.clear();
+
+	for (int i = 0; i < 100; i++) {
+		vector<double> v = { 0., 0., 0. };
+		functionPoints.push_back(v);
+	}
 	//srand(time(NULL));
-	int i=0;
+
 	double x, y;
 	///// temp
 	int sample = 10;
@@ -141,21 +126,77 @@ void Map::prepareData(int num)
 	double movey = std::min((ymax - ymin), move);
 	/////
 
-	numberOfPoints = 100;
+	//numberOfPoints = sample * sample;
+	numberOfPoints = 0;
 
 	//temp fun
 
-	for (double x = xmin; x < (xmax); x += movex) {
+	int ii=0;
 
-		for (double y = ymin; y < (ymax); y += movey) {
+	for (double xi = 0; xi < funValues.size(); xi += 5 ) {
 
-			functionPoints[i][0] = x;
-			functionPoints[i][1] = y;
-			functionPoints[i][2] = std::min(std::max(countFunction(x, y), zmin), zmax);
-			i++;
+		x = xi * movex + xmin;
+
+		for (double yi = 0; yi < funValues[0].size(); yi += 5) {
+
+			y = yi * movey + ymin;
+
+			functionPoints[ii][0] = x;
+			functionPoints[ii][1] = y;
+			functionPoints[ii][2] = std::min(std::max(funValues[xi][yi], zmin), zmax);
+			functionPoints[ii][2] = x + y;
+
+
+			ii++;
+
+			numberOfPoints++;
 		}
 	}
 
 	////////////
+
+	values.clear();
+
+	for (int i = 0; i < width; i++) {
+		vector<double> v;
+		for (int j = 0; j < height; j++) v.push_back(0.);
+		values.push_back(v);
+	}
+
+	for (int i = 0; i < height; i++)
+		for (int j = 0; j < width; j++)
+			values[j][i] = shepard(j / 100.0 - 2.5, -i / 100.0 + 2.5);*/
+
+	double x, y;
+	te_variable vars[] = { {"x", &x}, {"y", &y} };
+
+	const char* c = function.c_str();
+
+	int err;
+	te_expr* expr = te_compile(c, vars, 2, &err);
+
+
+	int sample = 50;
+
+	double movex = (double)(xmax - xmin) / width;
+	double movey = (double)(ymax - ymin) / height;
+
+	values.clear();
+
+	vector < double > tempVec;
+
+	for (double xi = xmin; xi <= (xmax); xi += movex) {
+
+		for (double yi = ymin; yi <= (ymax); yi += movey) {
+
+			x = xi;
+			y = yi;
+
+			tempVec.push_back(te_eval(expr));
+		}
+
+		values.push_back(tempVec);
+		tempVec.clear();
+	}
 
 }

@@ -258,6 +258,12 @@ void GUIMyFrame1::generateClick(wxMouseEvent& event)
 	mouseRotateY = 0;
 
 	if (!checkFunction()) return;
+
+	//objPer.getAxis(xMin, xMax, yMin, yMax, zMin, zMax);
+	//objMap.getRanges(xMin, xMax, yMin, yMax, zMin, zMax);
+	//objPer.RecountFunctionIntoData(zValuesVec);
+	//objMap.prepareData(zValuesVec, panelWidth, panelHeight);
+
 	repaint();
 	generateClicked = true;
 }
@@ -267,6 +273,7 @@ void GUIMyFrame1::panelRepaint(wxSizeEvent& event)
 	if ((panelWidth != panelNaWykres->GetSize().GetWidth() || panelHeight != panelNaWykres->GetSize().GetHeight()) && generateClicked) {
 		panelWidth = panelNaWykres->GetSize().GetWidth();
 		panelHeight = panelNaWykres->GetSize().GetHeight();
+		//objMap.prepareData(zValuesVec, panelWidth, panelHeight);
 		repaint();
 		return;
 	}
@@ -287,6 +294,7 @@ void GUIMyFrame1::repaint()
 	else {
 		//generuj mape konturowa
 		objMap.getRanges(xMin, xMax, yMin, yMax, zMin, zMax);
+		objMap.prepareData(zValuesVec, panelWidth, panelHeight, function);
 		objMap.repaint(panelNaWykres, panelWidth, panelHeight);
 
 	}

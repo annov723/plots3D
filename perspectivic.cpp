@@ -385,7 +385,7 @@ void Perspectivic::GenerateTransformMatrix(int width, int height, double rotateX
 	Matrix4 matrix3; // transformata obrotu
 	matrix3 = XRotation(rotateY) * YRotation(0) * ZRotation(rotateX);
 
-	t = matrix * matrix2 * matrix3;
+	t = matrix3 * matrix * matrix2;
 	t1 = m2 * m1;
 }
 
