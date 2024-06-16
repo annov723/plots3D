@@ -1,9 +1,5 @@
 #include "perspectivic.h"
 
-	double Perspectivic::countFunction(double x, double y) {
-	return sin(x) + x + y;
-}
-
 void Perspectivic::RecountFunctionIntoData(const vector<vector<double>> &funValues) {
 
 	data.clear();

@@ -60,7 +60,6 @@ public:
 		xmin = xmi; xmax = xma; ymin = ymi; ymax = yma; zmin = zmi; zmax = zma;
 	}
 
-	double countFunction(double x, double y);
 	void RecountFunctionIntoData(const vector<vector<double>>& funValues);
 
 	Matrix4 XRotation(double alpha);
